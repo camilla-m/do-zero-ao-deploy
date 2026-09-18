@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+data:
+  alert-rules.yml: |
+    groups:
+      - name: task-api
+        rules:
+          - alert: TaskApiIndisponivel
+            # "up == 0" sozinho so cobre o caso em que o Pod existe mas o scrape falha.
+            # Se o Pod for removido inteiramente (scale a 0, crash loop com remocao, etc.),
+            # a serie some do Prometheus -- nao vira 0, deixa de existir. absent() cobre
+            # exatamente esse segundo caso.
+            expr: |
+              (up{job="kubernetes-pods", pod=~"task-api-.*"} == 0)
+              or
+              absent(up{job="kubernetes-pods", pod=~"task-api-.*"})
+            for: 30s
+            labels:
+              severity: critical
+            annotations:
+              summary: "task-api fora do ar"
+              description: "Nenhum pod saudavel da task-api ha mais de 30s (scrape falhando ou pod inexistente)."

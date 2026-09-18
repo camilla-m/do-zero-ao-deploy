@@ -13,10 +13,14 @@ spec:
     metadata:
       labels:
         app: task-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: task-api
-          image: task-api:v2
+          image: task-api:v4
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:

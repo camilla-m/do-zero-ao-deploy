@@ -1,0 +1,20 @@
+# Substitui o ConfigMap "grafana-datasource" da Aula 03, agora com dois datasources no
+# mesmo arquivo montado -- Grafana le todos os arquivos .yaml daquele diretorio de
+# provisionamento, entao os dois datasources aparecem juntos sem precisar de subpasta.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource
+data:
+  datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki:3100

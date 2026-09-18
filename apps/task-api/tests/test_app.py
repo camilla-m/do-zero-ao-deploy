@@ -47,3 +47,10 @@ def test_atualiza_task(client):
     resp = client.patch(f"/tasks/{criada['id']}", json={"done": True})
     assert resp.status_code == 200
     assert resp.get_json()["done"] is True
+
+
+def test_metrics_expostas(client):
+    client.get("/health")
+    resp = client.get("/metrics")
+    assert resp.status_code == 200
+    assert b"task_api_requests_total" in resp.data

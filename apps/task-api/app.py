@@ -1,9 +1,45 @@
 import json
 import os
+import time
 
-from flask import Flask, jsonify, request
+from flask import Flask, Response, jsonify, request
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
+
+REQUEST_COUNT = Counter(
+    "task_api_requests_total",
+    "Total de requisicoes recebidas",
+    ["method", "path", "status"],
+)
+REQUEST_LATENCY = Histogram(
+    "task_api_request_duration_seconds",
+    "Duracao das requisicoes, em segundos",
+    ["method", "path"],
+)
+
+
+@app.before_request
+def _inicia_cronometro():
+    request._start_time = time.time()
+
+
+@app.after_request
+def _registra_metrica(response):
+    # request.path preserva a rota como veio (ex: /tasks/123) -- usamos
+    # request.url_rule pra agrupar por rota (/tasks/<int:task_id>), senao cada
+    # ID de tarefa vira uma serie temporal diferente (explode a cardinalidade).
+    path = str(request.url_rule) if request.url_rule else request.path
+    duracao = time.time() - getattr(request, "_start_time", time.time())
+
+    REQUEST_COUNT.labels(request.method, path, response.status_code).inc()
+    REQUEST_LATENCY.labels(request.method, path).observe(duracao)
+    return response
+
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 
 class MemoryStore:

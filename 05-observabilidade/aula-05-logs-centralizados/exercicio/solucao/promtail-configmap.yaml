@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: promtail-config
+data:
+  promtail.yaml: |
+    server:
+      http_listen_port: 9080
+
+    positions:
+      filename: /tmp/positions.yaml
+
+    clients:
+      - url: http://loki:3100/loki/api/v1/push
+
+    # NOTA: a abordagem "de livro" pra Promtail seria kubernetes_sd_configs (igual ao
+    # Prometheus, na Aula 02), descobrindo Pods automaticamente. Testando de verdade neste
+    # cluster, o kubernetes_sd_configs do Promtail (testado em duas versões da imagem)
+    # simplesmente nao encontrava nenhum target -- 0/0 -- mesmo com RBAC correto e a API
+    # do Kubernetes respondendo normalmente (confirmado manualmente com curl usando o
+    # mesmo token da ServiceAccount). Sem conseguir isolar a causa raiz em tempo habil, a
+    # solucao usa static_configs com glob de path, direcionado -- e testado, de verdade --
+    # pra task-api. Ver README desta aula pra mais contexto.
+    scrape_configs:
+      - job_name: task-api
+        static_configs:
+          - targets:
+              - localhost
+            labels:
+              app: task-api
+              namespace: default
+              __path__: /var/log/pods/*task-api*/task-api/*.log
