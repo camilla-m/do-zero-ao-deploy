@@ -1,4 +1,4 @@
-# Descomplicando DevOps & Cloud — Zero ao Deploy
+# Do Zero ao Deploy — DevOps & Cloud
 
 Repositório oficial do curso: material de aula, roteiros e exercícios práticos, organizados módulo a módulo.
 
