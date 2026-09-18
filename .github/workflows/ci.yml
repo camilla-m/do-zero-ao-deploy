@@ -6,23 +6,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: "pip"
-          cache-dependency-path: apps/task-api/requirements-dev.txt
-
-      - name: Instala dependências
-        working-directory: apps/task-api
-        run: pip install -r requirements-dev.txt
-
-      - name: Roda testes
-        working-directory: apps/task-api
-        run: pytest -v
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      working-directory: apps/task-api
 
   build-push:
     runs-on: ubuntu-latest

@@ -1,0 +1,28 @@
+name: Reusable - Test Python App
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        required: true
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: ${{ inputs.working-directory }}/requirements-dev.txt
+
+      - name: Instala dependências
+        working-directory: ${{ inputs.working-directory }}
+        run: pip install -r requirements-dev.txt
+
+      - name: Roda testes
+        working-directory: ${{ inputs.working-directory }}
+        run: pytest -v
