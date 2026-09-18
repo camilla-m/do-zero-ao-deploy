@@ -1,11 +1,11 @@
 import pytest
 
-from app import app, tasks, next_id  # noqa: F401 (next_id importado por clareza)
+from app import app, store
 
 
 @pytest.fixture
 def client():
-    tasks.clear()
+    store.reset()
     app.config["TESTING"] = True
     with app.test_client() as client:
         yield client

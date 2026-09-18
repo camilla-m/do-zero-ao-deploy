@@ -1,0 +1,17 @@
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      REDIS_URL: redis://cache:6379/0
+    depends_on:
+      - cache
+
+  cache:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:

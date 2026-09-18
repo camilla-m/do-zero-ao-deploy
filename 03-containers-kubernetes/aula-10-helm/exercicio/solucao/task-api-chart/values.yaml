@@ -1,0 +1,15 @@
+replicaCount: 3
+
+image:
+  repository: task-api
+  tag: v2
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+  targetPort: 5000
+
+logLevel: info
+appName: task-api
+
+secretName: task-api-secret

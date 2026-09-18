@@ -1,0 +1,6 @@
+apiVersion: v2
+name: task-api-chart
+description: Chart Helm da task-api, aplicacao usada no Modulo 3 do curso
+type: application
+version: 0.1.0
+appVersion: "v2"

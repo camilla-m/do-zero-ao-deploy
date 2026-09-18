@@ -1,0 +1,13 @@
+# Recria o cluster com as portas 80/443 do node publicadas em portas altas do host
+# (8080/8443, pra nao exigir privilegio de root pra abrir porta <1024).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 8080
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 8443
+        protocol: TCP
