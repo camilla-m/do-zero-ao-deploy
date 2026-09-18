@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minha-app # TODO: renomeie
+  labels:
+    app: minha-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: minha-app
+  template:
+    metadata:
+      labels:
+        app: minha-app
+      annotations:
+        # TODO: remova se sua app nao expoe /metrics (Modulo 5, Aula 02)
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: minha-app
+          image: minha-app:v1 # TODO: sua imagem
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000 # TODO: porta da sua aplicacao
+          # TODO: envFrom com ConfigMap/Secret, se precisar (Modulo 3, Aula 08)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minha-app # TODO: renomeie
+spec:
+  selector:
+    app: minha-app
+  ports:
+    - port: 80
+      targetPort: 5000
