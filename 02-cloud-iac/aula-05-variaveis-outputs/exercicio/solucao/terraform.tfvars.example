@@ -1,0 +1,5 @@
+# Copie para terraform.tfvars e preencha com o seu IP real.
+# terraform.tfvars nunca deve ser commitado se tiver dado sensível — aqui é só um IP,
+# mas o hábito de ter um .example e ignorar o arquivo real vale para qualquer projeto.
+
+meu_ip = "203.0.113.10/32"
