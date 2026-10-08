@@ -6,21 +6,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Instala dependências
-        working-directory: apps/task-api
-        run: pip install -r requirements-dev.txt
-
-      - name: Roda testes
-        working-directory: apps/task-api
-        run: pytest -v
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      working-directory: apps/task-api
 
   build-push:
     runs-on: ubuntu-latest
@@ -86,5 +74,4 @@ jobs:
           kubectl rollout status deployment/task-api --timeout=90s
           kubectl port-forward svc/task-api 8080:80 &
           sleep 3
-          curl --fail http://localhost:8089/health
-
+          curl --fail http://localhost:8080/health
