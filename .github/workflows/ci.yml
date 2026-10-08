@@ -10,7 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Info do ambiente
-        run: |
-          python3 --version-versdjsjkhdajs
-          ls apps/task-api
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instala dependências
+        working-directory: apps/task-api
+        run: pip install -r requirements-dev.txt
+
+      - name: Roda testes
+        working-directory: apps/task-api
+        run: pytest -v
