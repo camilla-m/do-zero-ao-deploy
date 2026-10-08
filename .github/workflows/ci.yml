@@ -86,5 +86,5 @@ jobs:
           kubectl rollout status deployment/task-api --timeout=90s
           kubectl port-forward svc/task-api 8080:80 &
           sleep 3
-          curl --fail http://localhost:8080/health
-          
+          curl --fail http://localhost:8089/health
+
