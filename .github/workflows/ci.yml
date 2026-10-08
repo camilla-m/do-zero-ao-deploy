@@ -12,5 +12,5 @@ jobs:
 
       - name: Info do ambiente
         run: |
-          python3 --version
+          python3 --version-versdjsjkhdajs
           ls apps/task-api
