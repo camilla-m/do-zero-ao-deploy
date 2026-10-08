@@ -42,7 +42,7 @@ jobs:
       - name: Build e push
         uses: docker/build-push-action@v6
         with:
-          context: apps/task-api
+          context: aaaaapps/task-api
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/task-api:latest
