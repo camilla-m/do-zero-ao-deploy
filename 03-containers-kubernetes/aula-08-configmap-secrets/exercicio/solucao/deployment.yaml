@@ -24,4 +24,4 @@ spec:
             - secretRef:
                 name: task-api-secret
           ports:
-            - containerPort: 5000
+            - containerPort: 5001

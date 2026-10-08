@@ -8,5 +8,5 @@ spec:
     app: task-api
   ports:
     - port: 80
-      targetPort: 5000
+      targetPort: 5001
       nodePort: 30500

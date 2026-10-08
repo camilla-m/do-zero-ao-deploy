@@ -7,7 +7,7 @@ image:
 
 service:
   port: 80
-  targetPort: 5000
+  targetPort: 5001
 
 logLevel: info
 appName: task-api
