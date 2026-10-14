@@ -14,7 +14,7 @@ def client():
 def test_health(client):
     resp = client.get("/health")
     assert resp.status_code == 200
-    assert resp.get_json() == {"status": "ok"}
+    assert resp.get_json() == {"status": "ok, versao 5"}
 
 
 def test_lista_vazia(client):
