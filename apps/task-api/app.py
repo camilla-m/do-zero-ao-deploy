@@ -125,7 +125,7 @@ store = RedisStore(redis_url) if redis_url else MemoryStore()
 
 @app.get("/health")
 def health():
-    return jsonify(status="ok"), 200
+    return jsonify(status="ok, versao 5"), 200
 
 
 @app.get("/tasks")
